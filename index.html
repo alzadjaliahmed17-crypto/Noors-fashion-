@@ -13,6 +13,8 @@ input, textarea {width:100%; padding:10px; margin:5px 0;}
 .admin {background:#ecf0f1; padding:20px;}
 .whatsapp {background:#25D366;}
 .gallery img {width:100px; margin:5px; border-radius:5px; cursor:pointer;}
+.service-item {display:flex; align-items:center; margin-bottom:5px;}
+.service-item img {width:30px; height:30px; margin-right:10px; border-radius:5px;}
 </style>
 </head>
 <body><header>
@@ -21,10 +23,14 @@ input, textarea {width:100%; padding:10px; margin:5px 0;}
 </header><section>
 <div class="card">
 <h2>Services | الخدمات</h2>
-<p id="services">Dishdasha, Suits, Pants, Custom Clothes</p>
+<div id="services">
+<!-- Services will appear here -->
+</div>
+<button onclick="addService()">Add Service Picture</button>
 </div><div class="card">
 <h2>Prices | الأسعار</h2>
 <p id="prices">Dishdasha: 10 OMR<br>Suits: 25 OMR<br>Pants: 5 OMR</p>
+<button onclick="deletePrices()">Delete Prices</button>
 </div><div class="card">
 <h2>Gallery | معرض الصور</h2>
 <div id="gallery" class="gallery">
@@ -44,14 +50,12 @@ input, textarea {width:100%; padding:10px; margin:5px 0;}
 <input type="password" placeholder="Admin Password" id="adminPass">
 <input placeholder="Shop Name" id="editName">
 <textarea placeholder="Description" id="editDesc"></textarea>
-<textarea placeholder="Services" id="editServices"></textarea>
-<textarea placeholder="Prices" id="editPrices"></textarea>
 <input placeholder="WhatsApp Number" id="editContact">
 <input type="file" id="uploadImage" accept="image/*">
 <button onclick="updateSite()">Update Website</button>
 <p id="statusMsg" style="color:red;"></p>
 </section><script>
-const ADMIN_PASSWORD = 'noorfashion123'; // Set your password here
+const ADMIN_PASSWORD = 'noorfashion123';
 
 function updateSite(){
  let pass = document.getElementById('adminPass').value;
@@ -62,20 +66,16 @@ function updateSite(){
 
  let name=document.getElementById('editName').value;
  let desc=document.getElementById('editDesc').value;
- let services=document.getElementById('editServices').value;
- let prices=document.getElementById('editPrices').value;
  let contact=document.getElementById('editContact').value;
 
  if(name) document.getElementById('shopName').innerText=name;
  if(desc) document.getElementById('shopDesc').innerText=desc;
- if(services) document.getElementById('services').innerText=services;
- if(prices) document.getElementById('prices').innerHTML=prices.replace(/\n/g,'<br>');
  if(contact){
   document.getElementById('contact').innerText='WhatsApp: '+contact;
   document.getElementById('waBtn').href='https://wa.me/968'+contact;
  }
 
- // Upload image from device
+ // Upload image to gallery
  let upload = document.getElementById('uploadImage');
  if(upload.files.length > 0){
   let file = upload.files[0];
@@ -89,12 +89,12 @@ function updateSite(){
   };
   reader.readAsDataURL(file);
  }
+}
 
- localStorage.setItem('shopName',name);
- localStorage.setItem('shopDesc',desc);
- localStorage.setItem('services',services);
- localStorage.setItem('prices',prices);
- localStorage.setItem('contact',contact);
+function deletePrices(){
+ if(confirm('Are you sure you want to delete all prices?')){
+  document.getElementById('prices').innerHTML='';
+ }
 }
 
 function saveGallery(){
@@ -113,15 +113,23 @@ function loadGallery(){
  });
 }
 
-window.onload=function(){
- if(localStorage.getItem('shopName')) document.getElementById('shopName').innerText=localStorage.getItem('shopName');
- if(localStorage.getItem('shopDesc')) document.getElementById('shopDesc').innerText=localStorage.getItem('shopDesc');
- if(localStorage.getItem('services')) document.getElementById('services').innerText=localStorage.getItem('services');
- if(localStorage.getItem('prices')) document.getElementById('prices').innerHTML=localStorage.getItem('prices').replace(/\n/g,'<br>');
- if(localStorage.getItem('contact')){
-  document.getElementById('contact').innerText='WhatsApp: '+localStorage.getItem('contact');
-  document.getElementById('waBtn').href='https://wa.me/968'+localStorage.getItem('contact');
+function addService(){
+ let imgURL = prompt('Enter service image URL');
+ let text = prompt('Enter service description');
+ if(imgURL && text){
+  let div = document.createElement('div');
+  div.className='service-item';
+  let img = document.createElement('img');
+  img.src=imgURL;
+  let span = document.createElement('span');
+  span.innerText = text;
+  div.appendChild(img);
+  div.appendChild(span);
+  document.getElementById('services').appendChild(div);
  }
+}
+
+window.onload=function(){
  loadGallery();
 }
 </script></body>
