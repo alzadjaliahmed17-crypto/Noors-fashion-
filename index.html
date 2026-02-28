@@ -47,7 +47,7 @@ input, textarea {width:100%; padding:10px; margin:5px 0;}
 <textarea placeholder="Services" id="editServices"></textarea>
 <textarea placeholder="Prices" id="editPrices"></textarea>
 <input placeholder="WhatsApp Number" id="editContact">
-<input placeholder="Image URL" id="editImage">
+<input type="file" id="uploadImage" accept="image/*">
 <button onclick="updateSite()">Update Website</button>
 <p id="statusMsg" style="color:red;"></p>
 </section><script>
@@ -65,7 +65,6 @@ function updateSite(){
  let services=document.getElementById('editServices').value;
  let prices=document.getElementById('editPrices').value;
  let contact=document.getElementById('editContact').value;
- let image=document.getElementById('editImage').value;
 
  if(name) document.getElementById('shopName').innerText=name;
  if(desc) document.getElementById('shopDesc').innerText=desc;
@@ -75,12 +74,20 @@ function updateSite(){
   document.getElementById('contact').innerText='WhatsApp: '+contact;
   document.getElementById('waBtn').href='https://wa.me/968'+contact;
  }
- if(image){
-  let imgTag = document.createElement('img');
-  imgTag.src = image;
-  imgTag.onclick = function(){ if(confirm('Delete this image?')){ imgTag.remove(); saveGallery(); } };
-  document.getElementById('gallery').appendChild(imgTag);
-  saveGallery();
+
+ // Upload image from device
+ let upload = document.getElementById('uploadImage');
+ if(upload.files.length > 0){
+  let file = upload.files[0];
+  let reader = new FileReader();
+  reader.onload = function(e){
+   let imgTag = document.createElement('img');
+   imgTag.src = e.target.result;
+   imgTag.onclick = function(){ if(confirm('Delete this image?')){ imgTag.remove(); saveGallery(); } };
+   document.getElementById('gallery').appendChild(imgTag);
+   saveGallery();
+  };
+  reader.readAsDataURL(file);
  }
 
  localStorage.setItem('shopName',name);
