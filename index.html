@@ -33,45 +33,57 @@ input, textarea {width:100%; padding:10px; margin:5px 0;}
 </div>
 </section><section class="admin">
 <h2>Admin Panel (Live Edit)</h2>
+<p><em>Enter password to edit:</em></p>
+<input type="password" placeholder="Admin Password" id="adminPass">
 <input placeholder="Shop Name" id="editName">
 <textarea placeholder="Description" id="editDesc"></textarea>
 <textarea placeholder="Services" id="editServices"></textarea>
 <textarea placeholder="Prices" id="editPrices"></textarea>
 <input placeholder="WhatsApp Number" id="editContact">
 <button onclick="updateSite()">Update Website</button>
+<p id="statusMsg" style="color:red;"></p>
 </section><script>
+const ADMIN_PASSWORD = 'noorfashion123'; // Set your password here
+
 function updateSite(){
-let name=document.getElementById('editName').value;
-let desc=document.getElementById('editDesc').value;
-let services=document.getElementById('editServices').value;
-let prices=document.getElementById('editPrices').value;
-let contact=document.getElementById('editContact').value;
+ let pass = document.getElementById('adminPass').value;
+ if(pass !== ADMIN_PASSWORD){
+  document.getElementById('statusMsg').innerText='Wrong password!';
+  return;
+ }
 
-if(name) document.getElementById('shopName').innerText=name;
-if(desc) document.getElementById('shopDesc').innerText=desc;
-if(services) document.getElementById('services').innerText=services;
-if(prices) document.getElementById('prices').innerHTML=prices.replace(/\n/g,'<br>');
-if(contact){
- document.getElementById('contact').innerText='WhatsApp: '+contact;
- document.getElementById('waBtn').href='https://wa.me/968'+contact;
-}
+ let name=document.getElementById('editName').value;
+ let desc=document.getElementById('editDesc').value;
+ let services=document.getElementById('editServices').value;
+ let prices=document.getElementById('editPrices').value;
+ let contact=document.getElementById('editContact').value;
 
-localStorage.setItem('shopName',name);
-localStorage.setItem('shopDesc',desc);
-localStorage.setItem('services',services);
-localStorage.setItem('prices',prices);
-localStorage.setItem('contact',contact);
+ if(name) document.getElementById('shopName').innerText=name;
+ if(desc) document.getElementById('shopDesc').innerText=desc;
+ if(services) document.getElementById('services').innerText=services;
+ if(prices) document.getElementById('prices').innerHTML=prices.replace(/\n/g,'<br>');
+ if(contact){
+  document.getElementById('contact').innerText='WhatsApp: '+contact;
+  document.getElementById('waBtn').href='https://wa.me/968'+contact;
+ }
+
+ localStorage.setItem('shopName',name);
+ localStorage.setItem('shopDesc',desc);
+ localStorage.setItem('services',services);
+ localStorage.setItem('prices',prices);
+ localStorage.setItem('contact',contact);
+ document.getElementById('statusMsg').innerText='Updated successfully!';
 }
 
 window.onload=function(){
-if(localStorage.getItem('shopName')) document.getElementById('shopName').innerText=localStorage.getItem('shopName');
-if(localStorage.getItem('shopDesc')) document.getElementById('shopDesc').innerText=localStorage.getItem('shopDesc');
-if(localStorage.getItem('services')) document.getElementById('services').innerText=localStorage.getItem('services');
-if(localStorage.getItem('prices')) document.getElementById('prices').innerHTML=localStorage.getItem('prices').replace(/\n/g,'<br>');
-if(localStorage.getItem('contact')){
- document.getElementById('contact').innerText='WhatsApp: '+localStorage.getItem('contact');
- document.getElementById('waBtn').href='https://wa.me/968'+localStorage.getItem('contact');
-}
+ if(localStorage.getItem('shopName')) document.getElementById('shopName').innerText=localStorage.getItem('shopName');
+ if(localStorage.getItem('shopDesc')) document.getElementById('shopDesc').innerText=localStorage.getItem('shopDesc');
+ if(localStorage.getItem('services')) document.getElementById('services').innerText=localStorage.getItem('services');
+ if(localStorage.getItem('prices')) document.getElementById('prices').innerHTML=localStorage.getItem('prices').replace(/\n/g,'<br>');
+ if(localStorage.getItem('contact')){
+  document.getElementById('contact').innerText='WhatsApp: '+localStorage.getItem('contact');
+  document.getElementById('waBtn').href='https://wa.me/968'+localStorage.getItem('contact');
+ }
 }
 </script></body>
 </html>
