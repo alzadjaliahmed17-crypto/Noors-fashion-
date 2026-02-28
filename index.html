@@ -8,10 +8,11 @@ body {font-family: Arial; margin:0; background:#f4f4f4;}
 header {background:#2c3e50; color:white; padding:20px; text-align:center;}
 section {padding:20px;}
 .card {background:white; padding:15px; margin:15px 0; border-radius:10px; box-shadow:0 0 10px rgba(0,0,0,0.1);} 
-button {padding:10px 15px; background:#27ae60; color:white; border:none; border-radius:5px; cursor:pointer;}
+button {padding:10px 15px; background:#27ae60; color:white; border:none; border-radius:5px; cursor:pointer; margin-top:5px;}
 input, textarea {width:100%; padding:10px; margin:5px 0;}
 .admin {background:#ecf0f1; padding:20px;}
 .whatsapp {background:#25D366;}
+.gallery img {width:100px; margin:5px; border-radius:5px;}
 </style>
 </head>
 <body><header>
@@ -24,6 +25,11 @@ input, textarea {width:100%; padding:10px; margin:5px 0;}
 </div><div class="card">
 <h2>Prices | الأسعار</h2>
 <p id="prices">Dishdasha: 10 OMR<br>Suits: 25 OMR<br>Pants: 5 OMR</p>
+</div><div class="card">
+<h2>Gallery | معرض الصور</h2>
+<div id="gallery" class="gallery">
+<!-- Images will appear here -->
+</div>
 </div><div class="card">
 <h2>Contact | تواصل</h2>
 <p id="contact">WhatsApp: 90000000</p>
@@ -40,6 +46,7 @@ input, textarea {width:100%; padding:10px; margin:5px 0;}
 <textarea placeholder="Services" id="editServices"></textarea>
 <textarea placeholder="Prices" id="editPrices"></textarea>
 <input placeholder="WhatsApp Number" id="editContact">
+<input placeholder="Image URL" id="editImage">
 <button onclick="updateSite()">Update Website</button>
 <p id="statusMsg" style="color:red;"></p>
 </section><script>
@@ -57,6 +64,7 @@ function updateSite(){
  let services=document.getElementById('editServices').value;
  let prices=document.getElementById('editPrices').value;
  let contact=document.getElementById('editContact').value;
+ let image=document.getElementById('editImage').value;
 
  if(name) document.getElementById('shopName').innerText=name;
  if(desc) document.getElementById('shopDesc').innerText=desc;
@@ -66,13 +74,17 @@ function updateSite(){
   document.getElementById('contact').innerText='WhatsApp: '+contact;
   document.getElementById('waBtn').href='https://wa.me/968'+contact;
  }
+ if(image){
+  let imgTag = document.createElement('img');
+  imgTag.src = image;
+  document.getElementById('gallery').appendChild(imgTag);
+ }
 
  localStorage.setItem('shopName',name);
  localStorage.setItem('shopDesc',desc);
  localStorage.setItem('services',services);
  localStorage.setItem('prices',prices);
  localStorage.setItem('contact',contact);
- document.getElementById('statusMsg').innerText='Updated successfully!';
 }
 
 window.onload=function(){
