@@ -12,7 +12,7 @@ button {padding:10px 15px; background:#27ae60; color:white; border:none; border-
 input, textarea {width:100%; padding:10px; margin:5px 0;}
 .admin {background:#ecf0f1; padding:20px;}
 .whatsapp {background:#25D366;}
-.gallery img {width:100px; margin:5px; border-radius:5px;}
+.gallery img {width:100px; margin:5px; border-radius:5px; cursor:pointer;}
 </style>
 </head>
 <body><header>
@@ -30,6 +30,7 @@ input, textarea {width:100%; padding:10px; margin:5px 0;}
 <div id="gallery" class="gallery">
 <!-- Images will appear here -->
 </div>
+<p><em>Click on an image to delete it</em></p>
 </div><div class="card">
 <h2>Contact | تواصل</h2>
 <p id="contact">WhatsApp: 90000000</p>
@@ -77,7 +78,9 @@ function updateSite(){
  if(image){
   let imgTag = document.createElement('img');
   imgTag.src = image;
+  imgTag.onclick = function(){ if(confirm('Delete this image?')){ imgTag.remove(); saveGallery(); } };
   document.getElementById('gallery').appendChild(imgTag);
+  saveGallery();
  }
 
  localStorage.setItem('shopName',name);
@@ -85,6 +88,22 @@ function updateSite(){
  localStorage.setItem('services',services);
  localStorage.setItem('prices',prices);
  localStorage.setItem('contact',contact);
+}
+
+function saveGallery(){
+ let images = [];
+ document.querySelectorAll('#gallery img').forEach(img=>images.push(img.src));
+ localStorage.setItem('gallery',JSON.stringify(images));
+}
+
+function loadGallery(){
+ let images = JSON.parse(localStorage.getItem('gallery')||'[]');
+ images.forEach(src=>{
+  let imgTag = document.createElement('img');
+  imgTag.src = src;
+  imgTag.onclick = function(){ if(confirm('Delete this image?')){ imgTag.remove(); saveGallery(); } };
+  document.getElementById('gallery').appendChild(imgTag);
+ });
 }
 
 window.onload=function(){
@@ -96,6 +115,7 @@ window.onload=function(){
   document.getElementById('contact').innerText='WhatsApp: '+localStorage.getItem('contact');
   document.getElementById('waBtn').href='https://wa.me/968'+localStorage.getItem('contact');
  }
+ loadGallery();
 }
 </script></body>
 </html>
